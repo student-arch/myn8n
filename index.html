@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Code Explanation Bot By Saikumar</title>
+  <title>Code Explanation Bot - Award Winning AI Platform</title>
 
   <style>
     :root{
@@ -17,15 +17,18 @@
       --muted:#a9b4db;
       --accent:#60a5fa;
       --accent2:#22d3ee;
+      --accent3:#a78bfa;
+      --accent4:#fb923c;
       --good:#34d399;
       --bad:#fb7185;
+      --gold:#fbbf24;
 
       --shadow: 0 18px 60px rgba(0,0,0,.55);
       --radius: 18px;
     }
 
     *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    html,body{ height:100%; scroll-behavior: smooth; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -33,12 +36,13 @@
         radial-gradient(900px 500px at 20% 15%, rgba(34,211,238,.16), transparent 55%),
         radial-gradient(800px 480px at 85% 20%, rgba(96,165,250,.14), transparent 60%),
         radial-gradient(900px 600px at 50% 95%, rgba(167,139,250,.10), transparent 55%),
+        radial-gradient(700px 400px at 10% 80%, rgba(251,146,60,.08), transparent 50%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
       color:var(--text);
       overflow-x:hidden;
     }
 
-    /* Animated grid background */
+    /* Enhanced animated grid background with color */
     .bg-grid{
       position: fixed;
       inset: 0;
@@ -60,7 +64,10 @@
     .bg-grid::after{
       content:"";
       position:absolute; inset:0;
-      background: radial-gradient(700px 300px at 50% 10%, rgba(255,255,255,.12), transparent 65%);
+      background: 
+        radial-gradient(700px 300px at 50% 10%, rgba(255,255,255,.12), transparent 65%),
+        radial-gradient(500px 400px at 80% 50%, rgba(167,139,250,.15), transparent 60%),
+        radial-gradient(600px 350px at 20% 70%, rgba(251,146,60,.12), transparent 55%);
       opacity:.35;
       animation: glowBreath 6.5s ease-in-out infinite;
     }
@@ -73,12 +80,183 @@
       50%{ opacity:.45; transform: translateY(10px); }
     }
 
+    /* Floating orbs animation */
+    .orbs{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .orb{
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.3;
+      animation: float 20s ease-in-out infinite;
+    }
+    .orb:nth-child(1){
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(34,211,238,0.4), transparent 70%);
+      top: 10%; left: 15%;
+      animation-delay: 0s;
+    }
+    .orb:nth-child(2){
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(167,139,250,0.35), transparent 70%);
+      top: 60%; right: 10%;
+      animation-delay: -7s;
+    }
+    .orb:nth-child(3){
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(251,146,60,0.3), transparent 70%);
+      bottom: 15%; left: 50%;
+      animation-delay: -14s;
+    }
+    @keyframes float{
+      0%, 100%{ transform: translate(0, 0) scale(1); }
+      33%{ transform: translate(50px, -80px) scale(1.1); }
+      66%{ transform: translate(-30px, 60px) scale(0.9); }
+    }
+
+    /* Navigation */
+    nav{
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(180deg, rgba(7,11,31,.95), rgba(5,7,19,.85));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 30px rgba(0,0,0,.3);
+    }
+    .nav-content{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .nav-brand{
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.3px;
+    }
+    .nav-links{
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav-links a{
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color .2s ease;
+      letter-spacing: 0.2px;
+    }
+    .nav-links a:hover{
+      color: var(--accent2);
+    }
+    .nav-links a.active{
+      color: var(--text);
+    }
+
+    /* Award badge */
+    .award-banner{
+      background: linear-gradient(135deg, rgba(251,191,36,.12), rgba(251,146,60,.08));
+      border: 1px solid rgba(251,191,36,.25);
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin: 20px auto 24px;
+      max-width: fit-content;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 0 30px rgba(251,191,36,.15);
+      animation: awardGlow 3s ease-in-out infinite;
+    }
+    @keyframes awardGlow{
+      0%, 100%{ box-shadow: 0 0 30px rgba(251,191,36,.15); }
+      50%{ box-shadow: 0 0 45px rgba(251,191,36,.25); }
+    }
+    .trophy{
+      font-size: 24px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce{
+      0%, 100%{ transform: translateY(0); }
+      50%{ transform: translateY(-5px); }
+    }
+    .award-text{
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.3px;
+    }
+
+    /* Dashboard info */
+    .dashboard-info{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .info-card{
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .info-icon{
+      font-size: 18px;
+      opacity: .8;
+    }
+    .info-content{
+      flex: 1;
+      min-width: 0;
+    }
+    .info-label{
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 2px;
+      letter-spacing: 0.3px;
+    }
+    .info-value{
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
     .wrap{
       max-width: 1040px;
-      margin: 34px auto;
+      margin: 0 auto;
       padding: 0 16px 46px;
       position: relative;
       z-index: 1;
+    }
+
+    .page{
+      display: none;
+    }
+    .page.active{
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn{
+      from{ opacity: 0; transform: translateY(10px); }
+      to{ opacity: 1; transform: translateY(0); }
     }
 
     .card{
@@ -91,6 +269,7 @@
       -webkit-backdrop-filter: blur(14px);
       position: relative;
       overflow:hidden;
+      margin-bottom: 20px;
     }
     .card::before{
       content:"";
@@ -133,6 +312,19 @@
       white-space: nowrap;
       overflow:hidden;
       text-overflow: ellipsis;
+    }
+    h2{
+      font-size: 24px;
+      margin: 0 0 16px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    h3{
+      font-size: 18px;
+      margin: 20px 0 10px;
+      color: var(--text);
     }
     .subtitle{
       margin: 2px 0 0;
@@ -294,7 +486,6 @@
       overflow:hidden;
     }
     .output::before{
-      /* scanlines */
       content:"";
       position:absolute; inset:0;
       background: repeating-linear-gradient(
@@ -321,73 +512,417 @@
       flex-wrap: wrap;
     }
 
-    /* Respect reduced motion */
+    p{
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 10px 0;
+    }
+
+    .feature-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .feature-item{
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .feature-item:hover{
+      transform: translateY(-2px);
+      border-color: rgba(34,211,238,.35);
+    }
+    .feature-icon{
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .feature-title{
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .feature-desc{
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .contact-info{
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .contact-item{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,.02);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
     @media (prefers-reduced-motion: reduce){
-      .bg-grid::before, .bg-grid::after, .output::before, .status.working .dot { animation: none !important; }
+      .bg-grid::before, .bg-grid::after, .output::before, .status.working .dot,
+      .orb, .award-banner, .trophy { animation: none !important; }
       .btn, input[type="text"], textarea { transition: none !important; }
       .btn::before{ display:none; }
+    }
+
+    @media (max-width: 600px){
+      .nav-content{ flex-direction: column; align-items: flex-start; }
+      .dashboard-info{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
 <body>
   <div class="bg-grid" aria-hidden="true"></div>
+  <div class="orbs" aria-hidden="true">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <nav>
+    <div class="nav-content">
+      <div class="nav-brand">🏆 Code Explanation Bot</div>
+      <div class="nav-links">
+        <a href="#home" class="nav-link active" onclick="showPage('home')">Home</a>
+        <a href="#about" class="nav-link" onclick="showPage('about')">About Us</a>
+        <a href="#contact" class="nav-link" onclick="showPage('contact')">Contact</a>
+        <a href="#privacy" class="nav-link" onclick="showPage('privacy')">Privacy Policy</a>
+        <a href="#terms" class="nav-link" onclick="showPage('terms')">Terms & Conditions</a>
+      </div>
+    </div>
+  </nav>
 
   <div class="wrap">
-    <div class="card">
-      <div class="topbar">
-        <div class="brand">
-          <div class="logo" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z"
-                    stroke="rgba(255,255,255,.92)" stroke-width="1.6" />
-              <path d="M12 7v10" stroke="rgba(34,211,238,.95)" stroke-width="1.6" />
-              <path d="M8 11h8" stroke="rgba(96,165,250,.95)" stroke-width="1.6" />
-            </svg>
+    <!-- Home Page -->
+    <div id="home" class="page active">
+      <div class="award-banner">
+        <div class="trophy">🏆</div>
+        <div class="award-text">🎉 AI Code Explanation Bot Competition</div>
+      </div>
+
+      <div class="card">
+        <div class="dashboard-info">
+          <div class="info-card">
+            <div class="info-icon">📅</div>
+            <div class="info-content">
+              <div class="info-label">Date</div>
+              <div class="info-value" id="currentDate"></div>
+            </div>
           </div>
-          <div style="min-width:0">
-            <h1>Code Explanation Bot</h1>
-            <div class="subtitle"> • n8n webhook • session memory</div>
+          <div class="info-card">
+            <div class="info-icon">🕐</div>
+            <div class="info-content">
+              <div class="info-label">Time</div>
+              <div class="info-value" id="currentTime"></div>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📍</div>
+            <div class="info-content">
+              <div class="info-label">Location</div>
+              <div class="info-value">Bhimavaram</div>
+            </div>
           </div>
         </div>
 
-        <div class="right-actions">
-          <button class="btn secondary" id="clearBtn" type="button">Clear</button>
-          <button class="btn secondary" id="copyBtn" type="button">Copy response</button>
+        <div class="topbar">
+          <div class="brand">
+            <div class="logo" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z"
+                      stroke="rgba(255,255,255,.92)" stroke-width="1.6" />
+                <path d="M12 7v10" stroke="rgba(34,211,238,.95)" stroke-width="1.6" />
+                <path d="M8 11h8" stroke="rgba(96,165,250,.95)" stroke-width="1.6" />
+              </svg>
+            </div>
+            <div style="min-width:0">
+              <h1>Code Explanation Bot</h1>
+              <div class="subtitle">AI-Powered Code Analysis • n8n Webhook Integration</div>
+            </div>
+          </div>
+
+          <div class="right-actions">
+            <button class="btn secondary" id="clearBtn" type="button">Clear</button>
+            <button class="btn secondary" id="copyBtn" type="button">Copy response</button>
+          </div>
+        </div>
+
+        <label for="url">n8n Webhook URL (Test or Production)</label>
+        <div class="row">
+          <input id="url" type="text" placeholder="https://saikumarn8n/webhook-test/code-explain" />
+          <button class="btn" id="saveUrlBtn" type="button">Save URL</button>
+        </div>
+        <div class="muted">
+          Tip: Use the Webhook "Test URL" while testing, then switch to "Production URL" after activating the workflow.
+        </div>
+
+        <label for="code">Paste code to explain</label>
+        <textarea id="code" placeholder="Paste your code here..."></textarea>
+
+        <div class="row" style="margin-top:10px;">
+          <div></div>
+          <button class="btn" id="sendBtn" type="button">Explain Code</button>
+        </div>
+
+        <div class="status" id="status" role="status" aria-live="polite" aria-atomic="true">
+          <span class="pill"><span class="dot" aria-hidden="true"></span><span id="statusText"></span></span>
+        </div>
+
+        <label>AI Response</label>
+        <div class="output" id="output" aria-label="Response output">
+          <div class="output-inner" id="outputInner"></div>
+        </div>
+
+        <div class="mini-actions">
+          <div class="muted" style="margin:0">
+            Pro tip: Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to analyze.
+          </div>
         </div>
       </div>
+    </div>
 
-      <label for="url">n8n Webhook URL (Test or Production)</label>
-      <div class="row">
-        <input id="url" type="text" placeholder="https://saikumarn8n/webhook-test/code-explain" />
-        <button class="btn" id="saveUrlBtn" type="button">Save URL</button>
-      </div>
-      <div class="muted">
-        Tip: Use the Webhook “Test URL” while testing, then switch to “Production URL” after activating the workflow.
-      </div>
+    <!-- About Us Page -->
+    <div id="about" class="page">
+      <div class="card">
+        <h2>About Us</h2>
+        <p>
+          Code Explanation Bot is an award-winning AI-powered platform designed to help developers understand code faster and more efficiently. Built with cutting-edge n8n workflow automation and AI technology, we transform complex code into simple, beginner-friendly explanations.
+        </p>
 
-      <label for="code">Paste code to explain</label>
-      <textarea id="code" placeholder="Paste your code here..."></textarea>
+        <h3>🏆 Our Achievement</h3>
+        <p>
+          We're proud to announce that our Code Explanation Bot won First Prize in the AI Innovation Competition for its exceptional approach to making code education accessible to everyone.
+        </p>
 
-      <div class="row" style="margin-top:10px;">
-        <input id="sessionId" type="text" placeholder="Session ID (auto)" />
-        <button class="btn" id="sendBtn" type="button">Explain</button>
-      </div>
-
-      <!-- live region for status -->
-      <div class="status" id="status" role="status" aria-live="polite" aria-atomic="true">
-        <span class="pill"><span class="dot" aria-hidden="true"></span><span id="statusText"></span></span>
-      </div>
-
-      <label>Response</label>
-      <div class="output" id="output" aria-label="Response output">
-        <div class="output-inner" id="outputInner"></div>
-      </div>
-
-      <div class="mini-actions">
-        <div class="muted" style="margin:0">
-          Pro tip: Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run.
+        <h3>✨ Key Features</h3>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-title">AI-Powered Analysis</div>
+            <div class="feature-desc">Advanced AI models explain your code in simple, understandable terms</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">Instant Responses</div>
+            <div class="feature-desc">Get explanations in seconds through n8n webhook integration</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-title">Secure & Private</div>
+            <div class="feature-desc">Your code is processed securely with no permanent storage</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎓</div>
+            <div class="feature-title">Beginner Friendly</div>
+            <div class="feature-desc">Explanations tailored for developers at all skill levels</div>
+          </div>
         </div>
+
+        <h3>🎯 Our Mission</h3>
+        <p>
+          To democratize code understanding by providing instant, accurate, and beginner-friendly explanations of any code snippet, helping developers learn faster and build better software.
+        </p>
+      </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+      <div class="card">
+        <h2>Contact Us</h2>
+        <p>
+          Have questions, feedback, or need support? We'd love to hear from you! Reach out through any of the following channels:
+        </p>
+
+        <h3>📬 Get In Touch</h3>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div style="font-size:20px">📧</div>
+            <div>
+              <div style="font-size:12px; color:var(--muted)">Email</div>
+              <div style="font-size:14px; font-weight:600">support@codeexplainbot.com</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div style="font-size:20px">📍</div>
+            <div>
+              <div style="font-size:12px; color:var(--muted)">Location</div>
+              <div style="font-size:14px; font-weight:600">Bhimavaram, Andhra Pradesh, India</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div style="font-size:20px">💬</div>
+            <div>
+              <div style="font-size:12px; color:var(--muted)">GitHub</div>
+              <div style="font-size:14px; font-weight:600">github.com/codeexplainbot</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div style="font-size:20px">🐦</div>
+            <div>
+              <div style="font-size:12px; color:var(--muted)">Twitter</div>
+              <div style="font-size:14px; font-weight:600">@CodeExplainBot</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>⏰ Support Hours</h3>
+        <p>
+          Monday - Friday: 9:00 AM - 6:00 PM IST<br>
+          Saturday: 10:00 AM - 4:00 PM IST<br>
+          Sunday: Closed
+        </p>
+
+        <h3>🚀 Quick Links</h3>
+        <p>
+          • Documentation: docs.codeexplainbot.com<br>
+          • API Reference: api.codeexplainbot.com<br>
+          • Community Forum: community.codeexplainbot.com
+        </p>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Page -->
+    <div id="privacy" class="page">
+      <div class="card">
+        <h2>Privacy Policy</h2>
+        <p><strong>Last Updated:</strong> December 24, 2025</p>
+
+        <h3>1. Information We Collect</h3>
+        <p>
+          Code Explanation Bot processes code snippets submitted through our platform. We collect:
+        </p>
+        <p>
+          • Code snippets you submit for analysis<br>
+          • Webhook URL you configure (stored locally in your browser)<br>
+          • Technical data like browser type and timestamp
+        </p>
+
+        <h3>2. How We Use Your Information</h3>
+        <p>
+          • To provide AI-powered code explanations<br>
+          • To improve our AI models and service quality<br>
+          • To ensure platform security and prevent abuse<br>
+          • To communicate service updates and support
+        </p>
+
+        <h3>3. Data Storage and Security</h3>
+        <p>
+          We take data security seriously. Your webhook URL is stored only in your browser's local storage and never transmitted to our servers. Code snippets are processed in real-time and are not permanently stored unless you explicitly save them.
+        </p>
+
+        <h3>4. Third-Party Services</h3>
+        <p>
+          We use n8n workflow automation and AI providers to process your requests. These services may temporarily cache data according to their own privacy policies.
+        </p>
+
+        <h3>5. Your Rights</h3>
+        <p>
+          You have the right to:<br>
+          • Clear your locally stored data at any time<br>
+          • Request information about data processing<br>
+          • Opt-out of optional data collection<br>
+          • Contact us with privacy concerns
+        </p>
+
+        <h3>6. Cookies and Local Storage</h3>
+        <p>
+          We use browser local storage to save your webhook URL and preferences for your convenience. No tracking cookies are used.
+        </p>
+
+        <h3>7. Changes to This Policy</h3>
+        <p>
+          We may update this privacy policy periodically. Changes will be posted on this page with an updated revision date.
+        </p>
+
+        <h3>8. Contact Us</h3>
+        <p>
+          For privacy-related questions, contact us at: privacy@codeexplainbot.com
+        </p>
+      </div>
+    </div>
+
+    <!-- Terms and Conditions Page -->
+    <div id="terms" class="page">
+      <div class="card">
+        <h2>Terms and Conditions</h2>
+        <p><strong>Last Updated:</strong> December 24, 2025</p>
+
+        <h3>1. Acceptance of Terms</h3>
+        <p>
+          By accessing and using Code Explanation Bot, you accept and agree to be bound by these Terms and Conditions. If you do not agree, please do not use our service.
+        </p>
+
+        <h3>2. Use of Service</h3>
+        <p>
+          You agree to use this service only for lawful purposes and in accordance with these terms:
+        </p>
+        <p>
+          • Do not submit malicious, harmful, or illegal code<br>
+          • Do not attempt to reverse engineer or exploit the platform<br>
+          • Do not use the service to violate any third-party rights<br>
+          • Respect rate limits and fair usage policies
+        </p>
+
+        <h3>3. Intellectual Property</h3>
+        <p>
+          The Code Explanation Bot platform, including its design, code, and AI models, is protected by intellectual property laws. You retain ownership of code you submit, but grant us temporary rights to process it.
+        </p>
+
+        <h3>4. Service Availability</h3>
+        <p>
+          We strive to maintain high availability but do not guarantee uninterrupted service. We reserve the right to modify, suspend, or discontinue the service at any time without notice.
+        </p>
+
+        <h3>5. Accuracy of Explanations</h3>
+        <p>
+          While we use advanced AI models, code explanations are provided "as-is" without warranties. Users should verify critical information independently.
+        </p>
+
+        <h3>6. Limitation of Liability</h3>
+        <p>
+          Code Explanation Bot and its creators shall not be liable for any direct, indirect, incidental, or consequential damages arising from use of the service.
+        </p>
+
+        <h3>7. User Responsibilities</h3>
+        <p>
+          You are responsible for:<br>
+          • Maintaining the confidentiality of your webhook URLs<br>
+          • Ensuring code submitted does not contain sensitive information<br>
+          • Complying with applicable laws and regulations<br>
+          • Configuring your n8n workflows securely
+        </p>
+
+        <h3>8. API and Webhook Usage</h3>
+        <p>
+          When using n8n webhooks with our service:<br>
+          • You must use valid webhook URLs<br>
+          • Excessive requests may be rate-limited<br>
+          • You're responsible for your n8n instance security
+        </p>
+
+        <h3>9. Modifications to Terms</h3>
+        <p>
+          We reserve the right to modify these terms at any time. Continued use of the service after changes constitutes acceptance of new terms.
+        </p>
+
+        <h3>10. Governing Law</h3>
+        <p>
+          These terms are governed by the laws of India. Any disputes shall be resolved in the courts of Bhimavaram, Andhra Pradesh.
+        </p>
+
+        <h3>11. Contact for Legal Matters</h3>
+        <p>
+          For legal inquiries: legal@codeexplainbot.com
+        </p>
       </div>
     </div>
   </div>
@@ -401,7 +936,6 @@
     const statusTextEl = document.getElementById('statusText');
     const sendBtn = document.getElementById('sendBtn');
     const saveUrlBtn = document.getElementById('saveUrlBtn');
-    const sessionIdEl = document.getElementById('sessionId');
     const copyBtn = document.getElementById('copyBtn');
     const clearBtn = document.getElementById('clearBtn');
 
@@ -423,15 +957,6 @@
       return localStorage.getItem('n8nWebhookUrl') || '';
     }
 
-    function getStoredSession() {
-      let s = localStorage.getItem('n8nSessionId');
-      if (!s) {
-        s = randomId();
-        localStorage.setItem('n8nSessionId', s);
-      }
-      return s;
-    }
-
     function saveUrl() {
       const u = (urlEl.value || '').trim();
       localStorage.setItem('n8nWebhookUrl', u);
@@ -451,7 +976,6 @@
       outputInnerEl.textContent = '';
       let i = 0;
       const chunk = () => {
-        // write in small chunks for speed
         const next = text.slice(i, i + 6);
         i += 6;
         outputInnerEl.textContent += next;
@@ -463,7 +987,7 @@
     async function send() {
       const baseUrl = (urlEl.value || '').trim();
       const code = codeEl.value || '';
-      const sessionId = (sessionIdEl.value || '').trim();
+      const sessionId = randomId(); // Generate session ID internally, not shown to user
 
       if (!baseUrl) {
         setStatus('Please set the n8n Webhook URL first.', 'error');
@@ -499,10 +1023,10 @@
         }
 
         await typeOut(text);
-        setStatus('Done.', 'ok');
+        setStatus('Analysis complete.', 'ok');
       } catch (e) {
         await typeOut(String(e));
-        setStatus('Network / CORS error. If calling n8n cloud from localhost, check CORS in the Webhook node.', 'error');
+        setStatus('Network / CORS error. Check CORS settings in the Webhook node.', 'error');
       } finally {
         sendBtn.disabled = false;
         sendBtn.textContent = oldBtnText;
@@ -523,16 +1047,41 @@
     function clearAll() {
       codeEl.value = '';
       setOutputText('');
-      setStatus('', 'idle');
+      setStatus('Ready.', 'idle');
       codeEl.focus();
     }
 
-    // init
-    urlEl.value = getStoredUrl();
-    sessionIdEl.value = getStoredSession();
-    setStatus('Ready.', 'idle');
+    // Navigation
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      event.target.classList.add('active');
+      window.scrollTo(0, 0);
+    }
 
-    // events
+    // Date and Time
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+      document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+
+    // Initialize
+    urlEl.value = getStoredUrl();
+    setStatus('Ready.', 'idle');
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Events
     saveUrlBtn.addEventListener('click', saveUrl);
     sendBtn.addEventListener('click', send);
     copyBtn.addEventListener('click', copyResponse);
@@ -542,7 +1091,6 @@
       if (ev.key === 'Enter') saveUrl();
     });
 
-    // Ctrl+Enter to send
     document.addEventListener('keydown', (ev) => {
       if ((ev.ctrlKey || ev.metaKey) && ev.key === 'Enter') send();
     });
